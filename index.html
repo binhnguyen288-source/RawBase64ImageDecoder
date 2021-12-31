@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Parse Base64s</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="container pt-4">
+            <h1 class="text-center">Parse Base64 Image from IoTCheckin</h1>
+            <div class="vstack gap-2">
+                <input class="form-control" id="base64str" placeholder="Enter the base64 string here">
+                <button class="btn btn-primary" id="parse">Parse</button>
+                <canvas id="canvas" width=256 height=144></canvas>
+            </div>
+        </div>
+            
+        <script>
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const btn = document.getElementById('parse');
+            const base64str = document.getElementById('base64str');
+            const image_data = new ImageData(256, 144);
+
+            btn.onclick = () => {
+                
+                const img_str = atob(base64str.value);
+                
+                for (let i = 0; i < 256 * 144; ++i) {
+                    image_data.data[4 * i] = img_str.charCodeAt(i);
+                    image_data.data[4 * i + 1] = img_str.charCodeAt(i);
+                    image_data.data[4 * i + 2] = img_str.charCodeAt(i);
+                    image_data.data[4 * i + 3] = 255;
+                }
+
+                ctx.putImageData(image_data, 0, 0);
+                
+            }
+        </script>
+    </body>
+</html>
